@@ -96,18 +96,25 @@
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.1em;
-    padding: 8px 0;
+    padding: 10px 0;
     overflow: hidden;
     white-space: nowrap;
     margin-top: 61px;
+    width: 100%;
+    display: block;
   }
 
-  .ticker-inner {
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker 40s linear infinite;
+  }
+
+  .ticker-track span { 
+    padding: 0 48px;
     display: inline-block;
-    animation: ticker 30s linear infinite;
+    flex-shrink: 0;
   }
-
-  .ticker-inner span { margin: 0 48px; }
 
   @keyframes ticker {
     from { transform: translateX(0); }
@@ -445,8 +452,49 @@
     color: var(--gray);
   }
 
-  /* WORK GRID */
-  .work-section { background: var(--black); }
+  /* VIDEO PLAYER WITH PLAY BUTTON */
+  .video-wrap {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .video-wrap video {
+    width: 100%;
+    display: block;
+  }
+
+  .play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px;
+    height: 64px;
+    background: rgba(143, 255, 90, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    pointer-events: none;
+  }
+
+  .play-btn::after {
+    content: '';
+    border-left: 22px solid #050505;
+    border-top: 13px solid transparent;
+    border-bottom: 13px solid transparent;
+    margin-left: 4px;
+  }
+
+  .video-wrap.playing .play-btn {
+    opacity: 0;
+  }
+
+  .video-wrap:hover .play-btn {
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 
   /* FEATURED STUNT — GORILLA */
   .gorilla-featured {
@@ -1051,7 +1099,7 @@
 
 <!-- TICKER -->
 <div class="ticker">
-  <div class="ticker-inner">
+  <div class="ticker-track">
     <span>MARKETING STUNT COORDINATOR</span>
     <span>294% APP SIGN-UP GROWTH</span>
     <span>10.2M TIKTOK LIKES</span>
@@ -1127,7 +1175,7 @@
     <div class="why-points">
       <div class="why-point">
         <div class="why-point-title">I Move Before the Moment Passes</div>
-        <p>Built a daily publishing system to break sports prediction market news before Polymarket's Instagram — <strong>owning the narrative at peak fan curiosity, not after it.</strong> That's the Kalshi mindset in action.</p>
+        <p>Built a daily publishing system to break sports prediction market news before competitors — <strong>owning the narrative at peak fan curiosity, not after it.</strong> That's the Kalshi mindset in action.</p>
       </div>
       <div class="why-point">
         <div class="why-point-title">I Originate. I Don't Replicate.</div>
@@ -1157,7 +1205,7 @@
       <div class="gorilla-tag">🦍 Flagship Stunt · Guerrilla Marketing · NYC</div>
       <div class="gorilla-title">The Gorilla Drop:<br>NYC Street Activation</div>
       <p class="gorilla-desc">
-        My idea: deploy someone in a full gorilla suit through Midtown Manhattan with VersePicks branding. A calculated bet that <strong>earned media and organic social footage would outperform any paid campaign at the same budget.</strong> Conceived, produced, and distributed entirely in-house. Zero paid media. Pure earned attention. Exactly the kind of bold, non-obvious stunt Kalshi should be running.
+        My idea: deploy someone in a full gorilla suit through Midtown Manhattan with VersePicks branding. A calculated bet that <strong>earned media and organic social footage would outperform any paid campaign at the same budget.</strong> Conceived, produced, and distributed entirely in house. Zero paid media. Pure earned attention. Exactly the kind of bold, non obvious stunt Kalshi should be running.
       </p>
       <div class="gorilla-metrics">
         <div class="gorilla-metric">Organic reach</div>
@@ -1167,9 +1215,12 @@
       </div>
     </div>
     <div class="gorilla-video-wrap">
-      <video autoplay muted loop playsinline>
-        <source src="gorilla-campaign.mp4" type="video/mp4">
-      </video>
+      <div class="video-wrap" onclick="toggleVideo(this)">
+        <video loop playsinline id="gorilla-vid">
+          <source src="gorilla-campaign.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"></div>
+      </div>
     </div>
   </div>
 
@@ -1180,11 +1231,11 @@
       <div class="work-card-num">02</div>
       <div class="work-tag">Viral Content · Stunt Format</div>
       <h3>Community Targeted Memes: 10.2M TikTok Likes</h3>
-      <p>Originated a format: lead with a high-engagement trending meme to cast the widest net, then <strong>embed the product message mid-carousel — a native ad that doesn't feel like one.</strong> Reverse-engineered what was trending in NFL and fantasy communities, inserted the brand at the exact right moment. 10.2M total likes. 5.3M on a single video. This wasn't luck — it was a repeatable system.</p>
+      <p>Originated a format: lead with a high-engagement trending meme to cast the widest net, then <strong>embed the product message mid carousel — a native ad that doesn't feel like one.</strong> Reverse-engineered what was trending in NFL and fantasy communities, inserted the brand at the exact right moment. 10.2M total likes. 5.3M on a single video. This wasn't luck — it was a repeatable system.</p>
       <div class="work-metrics">
         <div class="work-metric">10.2M total TikTok likes</div>
         <div class="work-metric">5.3M views on one video</div>
-        <div class="work-metric">Repeatable format — not one-off luck</div>
+        <div class="work-metric">Repeatable format — not one off luck</div>
       </div>
       <img src="trending-football-memes.jpeg" alt="Community Targeted Memes Strategy" class="work-card-media" loading="lazy">
     </div>
@@ -1193,25 +1244,28 @@
       <div class="work-card-num">03</div>
       <div class="work-tag">Creator Strategy · Live Events</div>
       <h3>12-Creator Branded Fantasy League</h3>
-      <p>Built and managed a branded fantasy football league with <strong>12 paid creators who streamed with VersePicks in-frame across 50+ appearances.</strong> Timed deliberately to NFL draft season — the single highest sports-social engagement window of the year. Timing was the entire strategy. Managed talent, production, and distribution end-to-end.</p>
+      <p>Built and managed a branded fantasy football league with <strong>12 paid creators who streamed with VersePicks in frame across 50+ appearances.</strong> Timed deliberately to NFL draft season — the single highest sports social engagement window of the year. Timing was the entire strategy. Managed talent, production, and distribution end to end.</p>
       <div class="work-metrics">
         <div class="work-metric">50+ stream appearances</div>
         <div class="work-metric">200+ concurrent viewers per stream</div>
         <div class="work-metric">NFL draft season timing — peak engagement</div>
       </div>
-      <video autoplay muted loop playsinline class="work-card-media">
-        <source src="claudia-creator.mp4" type="video/mp4">
-      </video>
+      <div class="video-wrap work-card-media" onclick="toggleVideo(this)">
+        <video loop playsinline>
+          <source src="claudia-creator.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"></div>
+      </div>
     </div>
 
     <div class="work-card fade-in">
       <div class="work-card-num">04</div>
       <div class="work-tag">Prediction Markets · Content System</div>
-      <h3>Beating Polymarket to Every Sports Story</h3>
-      <p>Built a daily publishing system to break sports prediction market news <strong>before Polymarket's Instagram was even awake.</strong> Owned the narrative at peak fan curiosity — not after the moment had passed. This is the Kalshi playbook: be the first voice when the market opens, not the echo when it closes.</p>
+      <h3>Beating Prediction Markets to Every Sports Story</h3>
+      <p>Built a daily publishing system to break sports prediction market news <strong>before competitors were even awake.</strong> Owned the narrative at peak fan curiosity — not after the moment had passed. Be the first voice when the market opens, not the echo when it closes.</p>
       <div class="work-metrics">
         <div class="work-metric">Daily publishing cadence</div>
-        <div class="work-metric">First-mover narrative ownership</div>
+        <div class="work-metric">First mover narrative ownership</div>
         <div class="work-metric">Prediction market audience — exact Kalshi demo</div>
       </div>
     </div>
@@ -1231,20 +1285,24 @@
   </div>
 
   <!-- TWITTER LIVESTREAM -->
-  <a href="https://x.com/classified_ai/status/1982915359859716421" target="_blank" rel="noopener" class="live-card" style="text-decoration:none;">
+  <div class="live-card">
     <div class="live-icon">📡</div>
     <div>
       <div class="work-tag" style="margin-bottom:12px;">Live Stream · Prediction Markets · X / Twitter</div>
       <h3>Live "How to Use Kalshi" Stream on X</h3>
-      <p>Produced and hosted a live stream on X (Twitter) via the VersePicks account walking the audience through <strong>how to actually use Kalshi</strong> — markets, mechanics, how to read odds, and why prediction markets matter. Built native Kalshi content for a sports betting audience that didn't know the product yet. <strong>I didn't wait to be hired — I was already evangelizing Kalshi before this application.</strong></p>
+      <p>Produced and hosted a live stream on X (Twitter) via the VersePicks account walking the audience through <strong>how to actually use Kalshi</strong> — markets, mechanics, how to read odds, and why prediction markets matter. Built native Kalshi content for a sports betting audience that didn't know the product yet.</p>
       <div class="work-metrics" style="margin-bottom:20px;">
         <div class="work-metric">Kalshi product education — live format</div>
-        <div class="work-metric">Sports betting audience → prediction market conversion</div>
-        <div class="work-metric">Organic, unpaid, audience-first content</div>
+        <div class="work-metric">Sports betting audience to prediction market conversion</div>
+        <div class="work-metric">Organic, unpaid, audience first content</div>
       </div>
-      <span class="live-link">Watch the Stream →</span>
+      <div style="max-width:600px;border:1px solid var(--border);overflow:hidden;">
+        <blockquote class="twitter-tweet" data-theme="dark">
+          <a href="https://x.com/classified_ai/status/1982915359859716421"></a>
+        </blockquote>
+      </div>
     </div>
-  </a>
+  </div>
 
 </section>
 
@@ -1263,7 +1321,7 @@
     <div class="number-card fade-in">
       <img src="viral-streaks.jpeg" alt="Viral Streaks" class="number-card-img" loading="lazy">
       <h4>Back to Back Viral Streaks</h4>
-      <p>100K to 386K views consistently — content that compounds, not one-off spikes.</p>
+      <p>100K to 386K views consistently — content that compounds, not one off spikes.</p>
     </div>
     <div class="number-card fade-in">
       <img src="fantasy-football-memes-tiktok.jpeg" alt="Fantasy Football TikTok" class="number-card-img" loading="lazy">
@@ -1282,12 +1340,12 @@
     </div>
     <div class="number-card fade-in" style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:24px;">
       <div style="text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;color:var(--yellow);line-height:1;">294%</div>
-        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-top:8px;">App Sign-Up Growth</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--yellow);line-height:1;">30M</div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-top:8px;">Monthly Views at Peak Across IG, TT, YT</div>
       </div>
       <div style="text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;color:var(--yellow);line-height:1;">50K+</div>
-        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-top:8px;">Fantasy Teams on VerseNation</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--yellow);line-height:1;">100K+</div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray);margin-top:8px;">Follower Growth Across All Platforms</div>
       </div>
     </div>
   </div>
@@ -1302,18 +1360,18 @@
   <div class="moments-grid">
     <div class="moment-card fade-in">
       <div class="moment-tag">Real Time · Prediction Markets</div>
-      <h3>Beating Polymarket to Every Sports Story</h3>
-      <p>Built a daily publishing system to break sports prediction market news <strong>before Polymarket's Instagram</strong> — owning the narrative at peak fan curiosity, not after it.</p>
+      <h3>Beating Prediction Markets to Every Sports Story</h3>
+      <p>Built a daily publishing system to break sports prediction market news before competitors — owning the narrative at peak fan curiosity, not after it.</p>
     </div>
     <div class="moment-card fade-in">
       <div class="moment-tag">Seasonal Peak · NFL Draft Window</div>
       <h3>Creator League Timed to Peak Fantasy Engagement</h3>
-      <p>Launched the 12-creator branded league at NFL draft season — <strong>the single highest sports-social engagement window of the year.</strong> Timing was the entire strategy.</p>
+      <p>Launched the 12-creator branded league at NFL draft season — <strong>the single highest sports social engagement window of the year.</strong> Timing was the entire strategy.</p>
     </div>
     <div class="moment-card fade-in">
       <div class="moment-tag">Platform Behavior · Live Sports</div>
       <h3>Athlete Naming Game → 200+ Live Viewers on Command</h3>
-      <p>Invented a live stream game mechanic that <strong>pulled 200+ concurrent viewers mid-stream regardless of sport or season.</strong> Community-driven, not game-dependent.</p>
+      <p>Invented a live stream game mechanic that <strong>pulled 200+ concurrent viewers mid stream regardless of sport or season.</strong> Community-driven, not game dependent.</p>
     </div>
     <div class="moment-card fade-in">
       <div class="moment-tag">Viral Timing · Pop Culture</div>
@@ -1390,7 +1448,7 @@
   <div class="contact-inner">
     <div>
       <h2>Ready to Build<br>Something for<br>Kalshi.</h2>
-      <p>I know your audience, your market, and the kind of bold non-obvious ideas that put Kalshi in the center of culture — not adjacent to it. Let's talk about what Kalshi should do next.</p>
+      <p>I know your audience, your market, and the kind of bold non obvious ideas that put Kalshi in the center of culture — not adjacent to it. Let's talk about what Kalshi should do next.</p>
     </div>
     <div class="contact-links">
       <a href="mailto:louisfirmstone@gmail.com" class="contact-link">Send an Email</a>
@@ -1407,6 +1465,7 @@
   <span class="yellow">Built for Kalshi · louisfirmstone@gmail.com</span>
 </footer>
 
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script>
   // Intersection Observer for fade-ins
   const observer = new IntersectionObserver((entries) => {
@@ -1421,6 +1480,19 @@
   }, { threshold: 0.1 });
 
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Video play/pause toggle with sound
+  function toggleVideo(wrapper) {
+    const video = wrapper.querySelector('video');
+    if (video.paused) {
+      video.play();
+      video.muted = false;
+      wrapper.classList.add('playing');
+    } else {
+      video.pause();
+      wrapper.classList.remove('playing');
+    }
+  }
 </script>
 
 </body>
